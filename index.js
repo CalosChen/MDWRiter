@@ -95,6 +95,7 @@ function vipContent(req, callback) {
 }
 
 
+
 function main() {
     console.log('Starting web server')
     var express = require('express')
@@ -181,6 +182,15 @@ function main() {
         let visits = parseInt(content) + 1
         fs.writeFileSync(pvPath, visits)
         res.send(visits.toString())
+    })
+
+    app.post("/addlink", function (req, res, next) {
+        if (!checkVipOrAdmin(req)) return
+        const { newlink } = req.body
+        const parts = newlink.split(' ')
+        const links = JSON.parse(fs.readFileSync("./static/links.json"))
+        links.push({ name: parts[0], url: parts[1] })
+        fs.writeFileSync("./static/links.json", JSON.stringify(links))
     })
 
     var server = app.listen(8091, function () {

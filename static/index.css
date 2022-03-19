@@ -1,5 +1,6 @@
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -8,7 +9,6 @@ body {
   font-family: Georgia;
   padding: 10px;
   background: #f1f1f1;
-  font-style:italic;
 }
 
 ul {
@@ -28,13 +28,32 @@ textarea {
   padding: 30px;
   text-align: center;
   background: white;
-  color:grey;
+  color: grey;
 }
 
 .header h1 {
   font-size: 50px;
   font-style: italic;
   text-decoration: underline;
+}
+
+.sitelinks {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  background-color: white;
+}
+
+.sitelinks a {
+  border: 1px solid white;
+  margin: 1px;
+  color: blue;
+  padding: 5px;
 }
 
 .topnav {
@@ -123,7 +142,7 @@ textarea {
   position: fixed;
   bottom: 0px;
   width: 100%;
-  font-style:italic;
+  font-style: italic;
 }
 
 #mds li a {
@@ -170,3 +189,4 @@ textarea {
     width: 100%;
   }
 }
+/*# sourceMappingURL=index.css.map */
