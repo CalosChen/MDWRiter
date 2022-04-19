@@ -156,6 +156,9 @@
                 data.forEach(function (md) {
                     $el.append(`<li><a href="javascript:void(0)" data-name=${md} >${md}</a><span data-name=${md}>MD</span></li>`)
                 })
+                if (document.cookie.indexOf('vip=') !== -1) {
+                    $(".leftcolumn span").hide()
+                }
             })
         }
 
