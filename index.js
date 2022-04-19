@@ -76,17 +76,21 @@ function readMdFileToHtml(fileName, folderPath) {
     return html
 }
 
-function checkVipOrAdmin(req) {
-    var vip = req.signedCookies.vip
+function checkAdmin(req) {
     var username = req.signedCookies.username
-    return vip === 'true' || username === 'admin'
+    return username === 'admin'
+}
+
+function checkVip(req) {
+    var vip = req.signedCookies.vip
+    return vip === 'true'
 }
 
 function vipContent(req, callback) {
     const { cate, name } = req.query
     var ret = "viponly"
     if (name.indexOf('vip') !== -1) {
-        if (checkVipOrAdmin(req)) {
+        if (checkAdmin(req) || checkVip(req)) {
             ret = callback(`${name}`, cate)
         }
     }
@@ -144,7 +148,7 @@ function main() {
     })
 
     app.post('/cate', function (req, res, next) {
-        if (!checkVipOrAdmin(req)) return
+        if (!checkAdmin(req)) return
         const { cate } = req.body
         mkCate(cate)
         refreshMdsCache()
@@ -169,7 +173,7 @@ function main() {
     })
 
     app.post('/md', function (req, res, next) {
-        if (!checkVipOrAdmin(req)) return
+        if (!checkAdmin(req)) return
         const { cate, name, content } = req.body
         writeMdFile(cate, name, content + '\n\n' + "<font color='purple'> Last edit: " + new Date().toString() + "</font>")
         refreshMdsCache()
@@ -185,7 +189,7 @@ function main() {
     })
 
     app.post("/addlink", function (req, res, next) {
-        if (!checkVipOrAdmin(req)) return
+        if (!checkAdmin(req)) return
         const { newlink } = req.body
         const parts = newlink.split(' ')
         const links = JSON.parse(fs.readFileSync("./static/links.json"))
