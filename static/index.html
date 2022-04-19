@@ -25,7 +25,7 @@
         <div class="logout" style="float: right;display: none;"><a href="/logout">Logout</a>
         </div>
         <div class="admin" style="float: right;"><input type="password" id="pass" /> <a href="javascript:void(0);"
-                onclick="auth()">Auth</a>
+                onclick="auth()">Auth</a> | <a href="javascript:void(0);" onclick="authVip()">VIP</a>
         </div>
 
         <a href="http://www.caloch.cn">
@@ -94,6 +94,18 @@
                 }
             })
         }
+
+        function authVip() {
+            var key = $('#pass').val()
+            $.post('/vip', { key }, function (data) {
+                if (data === 'OK') {
+                    hideAdms()
+                    $('.admin').hide()
+                    $('.logout').show()
+                }
+            })
+        }
+
 
         function add(key, val) {
             switch (key) {

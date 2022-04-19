@@ -116,11 +116,15 @@ function main() {
 
     app.use(function (req, res, next) {
         var username = req.signedCookies.username
-        if (req.method === 'POST' && username !== 'admin' && req.url !== '/auth') {
+        const userIsNotAdmin = username !== 'admin'
+        const isNotAuthAction = req.url !== '/auth'
+        const isVipAuthAction = req.url === '/vip'
+        if (req.method === 'POST' && userIsNotAdmin && isNotAuthAction && !isVipAuthAction) {
             res.send('Unauthorized.')
             res.end()
         }
-        else next()
+        else
+            next()
     })
 
 
@@ -134,12 +138,18 @@ function main() {
 
     app.get('/logout', function (req, res, next) {
         res.clearCookie('username')
+        res.clearCookie('vip')
         res.send('OK')
     })
 
     app.post('/vip', function (req, res, next) {
-        res.cookie("vip", "true", { maxAge: 60 * 60 * 1000, signed: true });
-        res.send('OK')
+        if (req.body.key === config.vip) {
+            res.cookie("vip", "true", { maxAge: 60 * 60 * 1000, signed: true });
+            res.send('OK')
+        }
+        else {
+            res.send('Failed')
+        }
     })
 
     app.get('/cates', function (req, res, next) {
