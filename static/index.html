@@ -219,12 +219,13 @@
         //     }
 
         // }, 8000);
-
+        var timeoutHook;
         function AutoSave() {
+            clearTimeout(timeoutHook)
             if ($('#main1').css('display') === 'block' && $("#save").css("display") !== 'none') {
                 $('#save').click()
             }
-            setTimeout(AutoSave, 8000);
+            timeoutHook = setTimeout(AutoSave, 8000);
         }
         AutoSave()
 
